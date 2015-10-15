@@ -1,0 +1,27 @@
+#cloud-config
+hostname: nixtest
+coreos:
+  etcd:    
+    addr: $private_ipv4:4001
+    peer-addr: $private_ipv4:7001
+  units:
+    - name: etcd.service
+      command: start
+    - name: fleet.service
+      command: start
+    - name: static.network
+      content: |
+        [Match]
+        Name=ens3
+#[Network]
+#        Address=172.16.15.177
+#        Gateway=172.16.0.1
+#        DNS=158.152.1.43
+#        DNS=158.152.1.58 
+users:
+  - name: core
+    ssh-authorized-keys: 
+      - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAgheud0Cc80SKuz7PNLtVyM6aMVHDfj26AK/Sp9bnvF5sm00gMU6OGEGusYK7H0ahIoQ/SZO4uMKCZtKXqGOfE0oc5ZsOrG3DdZpN73yIGYnrMucnrOQubKwnCfuGVNb8gwPfT67X9fx20ZgkAUnLrvrg/EOAsXHCxygq7vjiwxSBzPqo9xc482BrAge9c9ESkZKYJRxmuOdrNZtWvl0GqNjTmnxUyOsQYEI435KZV/lvEAe0VEn3nVaZ4nIQp2zgiTkihxID8InQRCEoJrkbDS3n0YTgZFNHh2i7/PMwMu7XlcgAJH6+DWoYBeQiSuNnuitIxgsPy1mkSX3fVnOyJw== rsa-key-20150707
+  - groups:
+      - sudo
+      - docker
